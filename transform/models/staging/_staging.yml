@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: Cleaned and renamed transactions from raw source. One row per transaction.
+    columns:
+      - name: sender_id
+        description: Sender account ID
+        tests:
+          - not_null
+      - name: receiver_id
+        description: Receiver account ID
+        tests:
+          - not_null
+      - name: hour_of_sim
+        description: Simulated hour (1–744)
+        tests:
+          - not_null
+      - name: txn_type
+        description: Transaction type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER']
+      - name: txn_amount
+        description: Transaction amount
+        tests:
+          - not_null
+      - name: is_fraud
+        description: Ground-truth fraud label
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1]

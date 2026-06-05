@@ -1,0 +1,63 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: Raw transactions loaded directly from PaySim CSV via load_to_warehouse.py
+    tables:
+      - name: transactions
+        description: 6.36M synthetic mobile-money transactions with fraud labels
+        columns:
+          - name: step
+            description: Simulated hour of the transaction (1–744)
+            tests:
+              - not_null
+          - name: type
+            description: Transaction type — CASH_IN, CASH_OUT, DEBIT, PAYMENT, TRANSFER
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER']
+          - name: amount
+            description: Transaction amount in local currency
+            tests:
+              - not_null
+          - name: name_orig
+            description: Sender account ID
+            tests:
+              - not_null
+          - name: old_balance_org
+            description: Sender balance before the transaction
+            tests:
+              - not_null
+          - name: new_balance_orig
+            description: Sender balance after the transaction
+            tests:
+              - not_null
+          - name: name_dest
+            description: Receiver account ID
+            tests:
+              - not_null
+          - name: old_balance_dest
+            description: Receiver balance before the transaction
+            tests:
+              - not_null
+          - name: new_balance_dest
+            description: Receiver balance after the transaction
+            tests:
+              - not_null
+          - name: is_fraud
+            description: Ground-truth fraud label (1 = fraud)
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: [0, 1]
+          - name: is_flagged_fraud
+            description: Simulator's own internal flag (mostly 0, not reliable)
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: [0, 1]

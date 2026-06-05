@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: fct_transactions
+    description: Fact table with one row per transaction. Materialized as a table for fast downstream queries.
+    columns:
+      - name: transaction_id
+        description: Surrogate primary key
+        tests:
+          - not_null
+          - unique
+      - name: sender_id
+        description: Sender account ID
+        tests:
+          - not_null
+      - name: receiver_id
+        description: Receiver account ID
+        tests:
+          - not_null
+      - name: txn_type
+        description: Transaction type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER']
+      - name: txn_amount
+        description: Transaction amount
+        tests:
+          - not_null
+      - name: is_fraud
+        description: Ground-truth fraud label
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+
+  - name: agg_fraud_by_type
+    description: Fraud summary aggregated by transaction type. One row per type.
+    columns:
+      - name: txn_type
+        description: Transaction type (primary key for this aggregate)
+        tests:
+          - not_null
+          - unique
+      - name: total_transactions
+        description: Total transaction count for this type
+        tests:
+          - not_null
+      - name: fraud_rate_pct
+        description: Fraud rate as a percentage
+        tests:
+          - not_null
