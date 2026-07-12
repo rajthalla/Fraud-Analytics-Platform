@@ -1,4 +1,4 @@
-# FinTxn Platform
+# Fraud Analytics Platform: Data Pipeline, ML & LLM Assistant
 
 Fraud analytics platform for mobile money transaction data. Ingests and transforms 6.36M PaySim transactions through a dbt pipeline, flags anomalies with an unsupervised Isolation Forest model, and surfaces results through a Streamlit dashboard. A document-grounded query assistant (RAG + text-to-SQL) lets analysts ask questions about the warehouse schema and AML compliance policy in plain language.
 
